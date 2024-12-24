@@ -1,0 +1,42 @@
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin box-shadow($x: 0px, $y: 2px, $blur: 4px, $color: rgba(0, 0, 0, 0.1)) {
+  box-shadow: $x $y $blur $color;
+}
+
+@mixin border($direction: all, $width: 1px, $color: $color-terciary) {
+  @if $direction == all {
+    border: $width solid $color;
+  } @else {
+    border-#{$direction}: $width solid $color;
+  }
+}
+
+@mixin text-color($color) {
+  color: $color !important;
+}
+
+@mixin font-style($weight, $style: normal) {
+  font-family: $font-family;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: $style;
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: 768px) {
+      @content;
+    }
+  }
+}
