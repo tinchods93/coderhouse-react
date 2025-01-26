@@ -1,12 +1,14 @@
 import './card.scss';
-const Card = ({ card }) => {
+
+/*
+header: any
+content: any
+ */
+const Card = ({ header, children }) => {
   return (
     <article className='card'>
-      <img src={card.image_url} alt={card.name} />
-      <h2>{card.name}</h2>
-      <p>{card.description}</p>
-      <p>{card.price}</p>
-      <p>{card.category}</p>
+      <div className='card-header'>{header}</div>
+      <div className='card-content'>{children}</div>
     </article>
   );
 };

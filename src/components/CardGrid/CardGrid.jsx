@@ -1,11 +1,10 @@
 import './cardGrid.scss';
-import Card from '../Card/Card';
 
-const CardGrid = ({ cards }) => {
+const CardGrid = ({ itemList, CardComponent }) => {
   return (
     <section className='card-grid' id='store'>
-      {cards.map((card) => (
-        <Card key={card.id} card={card} />
+      {itemList.map((card) => (
+        <CardComponent key={card.id} item={card} />
       ))}
     </section>
   );
