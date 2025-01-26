@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "Smartphone XYZ",
+        "description": "A high-quality smartphone with a sleek design.",
+        "price": 699.99,
+        "image_url": "https://saratogasnowmobile.com/wp-content/uploads/woocommerce-placeholder.png",
+        "category": "Electronics"
+    },
+    {
+        "id": 2,
+        "name": "Wireless Headphones",
+        "description": "Noise-cancelling wireless headphones with long battery life.",
+        "price": 199.99,
+        "image_url": "https://saratogasnowmobile.com/wp-content/uploads/woocommerce-placeholder.png",
+        "category": "Electronics"
+    },
+    {
+        "id": 3,
+        "name": "Running Shoes",
+        "description": "Comfortable and durable running shoes for all terrains.",
+        "price": 89.99,
+        "image_url": "https://saratogasnowmobile.com/wp-content/uploads/woocommerce-placeholder.png",
+        "category": "Footwear"
+    },
+    {
+        "id": 4,
+        "name": "Coffee Maker",
+        "description": "Brew the perfect cup of coffee every time with this coffee maker.",
+        "price": 49.99,
+        "image_url": "https://saratogasnowmobile.com/wp-content/uploads/woocommerce-placeholder.png",
+        "category": "Home Appliances"
+    },
+    {
+        "id": 5,
+        "name": "Backpack",
+        "description": "A spacious and stylish backpack for everyday use.",
+        "price": 39.99,
+        "image_url": "https://saratogasnowmobile.com/wp-content/uploads/woocommerce-placeholder.png",
+        "category": "Accessories"
+    }
+]

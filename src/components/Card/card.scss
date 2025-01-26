@@ -1,0 +1,9 @@
+@use '../../styles/mixins.scss' as *;
+
+.card {
+  width: 20%;
+  &:hover {
+    cursor: pointer;
+  }
+  @include box-shadow(0px, 4px, 10px, rgba(0, 0, 0, 0.2));
+}
