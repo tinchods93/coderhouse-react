@@ -1,14 +1,17 @@
 import apiConfig from '../config/apiConfig';
 
-const baseDomain = apiConfig.baseUrl;
-const basePath = `${baseDomain}/${apiConfig.products}`;
+export const getAllProducts = async (searchQuery) => {
+  let url = apiConfig.products.getAll.url;
+  if (searchQuery?.category) {
+    url += `?category=${searchQuery.category}`;
+  }
+  const response = await fetch(url)?.then((res) => res.json());
 
-export const getAllProducts = async () => {
-  const response = await fetch(basePath);
-  return response.json();
+  return response;
 };
 
 export const getProductById = async (id) => {
-  const response = await fetch(`${basePath}/${id}`);
+  const finalUrl = apiConfig.products.getById.url.replace(':id', id);
+  const response = await fetch(finalUrl);
   return response.json();
 };

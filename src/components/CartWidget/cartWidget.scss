@@ -1,0 +1,137 @@
+@use '../../styles/mixins.scss' as *;
+@use '../../styles/variables.scss' as *;
+
+.cart {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 350;
+  background-color: $background-color;
+  border: 1px solid $color-4;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $color-4;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    &-close {
+      height: fit-content;
+      background-color: transparent;
+      border: 0;
+      cursor: pointer;
+    }
+  }
+
+  &__items {
+    max-height: 400px;
+    overflow-y: auto;
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      &__item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid $color-4;
+
+        &-image {
+          width: 50px;
+          height: 50px;
+        }
+
+        &-info {
+          flex: 1;
+          margin-left: 10px;
+
+          h3 {
+            margin: 0;
+            margin-bottom: 10px;
+            font-size: 16px;
+          }
+
+          p {
+            margin: 0;
+            color: $color-3;
+          }
+
+          &-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            button {
+              background-color: $color-2;
+              color: $background-color;
+              border: none;
+              padding: 5px;
+              cursor: pointer;
+
+              &:hover {
+                background-color: darken($color-2, 10%);
+              }
+            }
+
+            span {
+              margin: 0 10px;
+              color: $color-2;
+            }
+          }
+        }
+
+        &-total {
+          margin-left: 10px;
+
+          h3 {
+            margin: 0;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  &__total {
+    padding: 10px 0;
+    border-top: 1px solid $color-4;
+    // text-align: right;
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+
+    button {
+      background-color: $color-2;
+      color: $background-color;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: darken($color-2, 10%);
+      }
+    }
+  }
+}
