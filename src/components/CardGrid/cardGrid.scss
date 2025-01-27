@@ -2,10 +2,16 @@
 
 .card-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  justify-content: baseline;
   width: 100%;
-  box-sizing: border-box;
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    width: fit-content;
+    box-sizing: border-box;
+  }
 }

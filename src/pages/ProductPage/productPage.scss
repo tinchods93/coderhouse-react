@@ -1,0 +1,98 @@
+@use '../../styles/mixins.scss' as *;
+@use '../../styles/variables.scss' as *;
+
+.product-page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-height: fit-content;
+    background: $background-color;
+    gap: $spacing-sm;
+    padding: $spacing-sm;
+    border-radius: 10px;
+
+    section {
+      width: 100%;
+      height: 100%;
+    }
+
+    // la segunda section
+    section:nth-child(2) {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @include respond-to(md) {
+      flex-direction: row;
+      max-width: 80%;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__header {
+    font-size: 2rem;
+    font-weight: bold;
+    height: 100%;
+    h1 {
+      font-size: 1.5rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  &__body {
+    height: 100%;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  &__info {
+    font-size: 1.2rem;
+    color: #555;
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      width: 50%;
+      text-align: center;
+    }
+
+    button {
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}

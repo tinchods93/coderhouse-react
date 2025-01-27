@@ -12,7 +12,8 @@ main {
   display: flex;
   flex-direction: column;
 
-  @include respond-to(sm) {
+  @include respond-to(md) {
     padding: $spacing-md;
+    min-height: 100vh;
   }
 }
