@@ -1,4 +1,4 @@
-const baseUrl = 'https://coderhouse-b1-219322d41f8f.herokuapp.com/api';
+const baseUrl = 'https://dummyjson.com';
 
 const apiConfig = {
   baseUrl,
