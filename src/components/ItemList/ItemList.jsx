@@ -1,6 +1,6 @@
-import './cardGrid.scss';
+import './itemList.scss';
 
-const CardGrid = ({ itemList, CardComponent }) => {
+const ItemList = ({ itemList, CardComponent }) => {
   return (
     <section className='card-grid' id='store'>
       <div className='card-grid-container'>
@@ -12,4 +12,4 @@ const CardGrid = ({ itemList, CardComponent }) => {
   );
 };
 
-export default CardGrid;
+export default ItemList;

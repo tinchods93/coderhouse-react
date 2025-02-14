@@ -1,51 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import './cartWidget.scss';
-import { getCartById } from '../../api/services/cartsService';
+import { CartContext } from '../../contexts/CartContext/CartContextProvider';
+import CartItem from '../CartItem/CartItem';
 
-const CartItem = ({ item }) => {
-  return (
-    <div className='cart__items__list__item'>
-      <div className='cart__items__list__item-image'>
-        <img
-          src='https://static-00.iconduck.com/assets.00/placeholder-icon-2048x2048-48kucnce.png'
-          alt='item'
-        />
-      </div>
-      <div className='cart__items__list__item-info'>
-        <h3>Producto 1</h3>
-        <div className='cart__items__list__item-info-quantity'>
-          <div className='cart__items__list__item-info-quantity-actions'>
-            <button>-</button>
-            <span>1</span>
-            <button>+</button>
-          </div>
-        </div>
-      </div>
-      <div className='cart__items__list__item-total'>
-        <h3>$10.00</h3>
-      </div>
-    </div>
-  );
-};
-const CartWidget = ({ cartId }) => {
-  const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(false);
+const CartWidget = () => {
+  const [cart, , , , clearCart] = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
-
-  useEffect(() => {
-    if (showCart && cartId) {
-      setLoading(true);
-      getCartById(cartId)
-        .then((data) => {
-          setCart(data);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [cartId, showCart]);
 
   const handleShowCart = (value) => {
     setShowCart(value);
@@ -64,33 +24,27 @@ const CartWidget = ({ cartId }) => {
                 X
               </button>
             </div>
-            {!loading ? (
-              cart?.products?.length > 0 ? (
-                <>
-                  <div className='cart__items'>
-                    <div className='cart__items__list'>
-                      <CartItem />
-                      <CartItem />
-                      <CartItem />
-                    </div>
-                    <div className='cart__total'>
-                      <h2>Subtotal:</h2>
-                      <h2>$10.00</h2>
-                    </div>
+            {cart?.products?.length ? (
+              <>
+                <div className='cart__items'>
+                  <div className='cart__items__list'>
+                    {cart.products.map((item) => (
+                      <CartItem key={item.id} item={item} />
+                    ))}
                   </div>
-                  <div className='cart__actions'>
-                    <button>Ver Carrito</button>
-                    <button>Finalizar Compra</button>
+                  <div className='cart__total'>
+                    <h2>Subtotal:</h2>
+                    <h2>${cart.total.toFixed(2)}</h2>
                   </div>
-                </>
-              ) : (
-                <>
-                  <h2>No hay productos en el carrito</h2>
-                </>
-              )
+                </div>
+                <div className='cart__actions'>
+                  <button>Finalizar Compra</button>
+                  <button onClick={() => clearCart()}>Limpiar Carrito</button>
+                </div>
+              </>
             ) : (
               <>
-                <h2>Cargando...</h2>
+                <h2>No hay productos en el carrito</h2>
               </>
             )}
           </div>

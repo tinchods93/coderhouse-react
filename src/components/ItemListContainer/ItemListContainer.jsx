@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { Pagination } from 'antd';
-import CardGrid from '../../components/CardGrid/CardGrid';
+import ItemList from '../ItemList/ItemList';
 import { getAllProducts } from '../../api/services/products/productsService';
-import ProductCard from '../../components/ProductCard/ProductCard';
+import Item from '../Item/Item';
 import LoadingComponent from '../Loading/LoadingComponent';
 import paginateProducts from '../../api/services/products/utils/paginateProducts';
 
-const ProductsGrid = () => {
+const ItemListContainer = () => {
   const [allProducts, setAllProducts] = useState([]); // todas las paginas
   const [productsPages, setProductsPages] = useState([]); // todas las paginas
   const [selectedProductsPage, setSelectedProductsPage] = useState([]); // la pagina seleccionada
@@ -88,9 +88,9 @@ const ProductsGrid = () => {
                 </select>
               </div>
               {selectedProductsPage && (
-                <CardGrid
+                <ItemList
                   itemList={selectedProductsPage}
-                  CardComponent={ProductCard}
+                  CardComponent={Item}
                 />
               )}
               <Pagination
@@ -119,4 +119,4 @@ const ProductsGrid = () => {
   );
 };
 
-export default ProductsGrid;
+export default ItemListContainer;
