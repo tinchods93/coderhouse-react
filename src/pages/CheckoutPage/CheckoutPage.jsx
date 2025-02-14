@@ -65,7 +65,6 @@ const CheckoutPage = () => {
                     key={item.id}
                     className='checkout-item'
                     onClick={() => {
-                      console.log('MARTIN_LOG=> click en', item.title);
                       navigate(`/products/${item.id}`);
                     }}>
                     <td>

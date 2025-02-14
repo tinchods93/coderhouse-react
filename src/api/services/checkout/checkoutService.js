@@ -8,9 +8,7 @@ const firestoreCollection = 'payments';
  * para generar un pago y guardarlo en firebase
  */
 export const createPayment = async (cart) => {
-  console.log('MARTIN_LOG=> createPayment -> cart', cart);
   const payment = formatCartToPayment(cart);
-  console.log('MARTIN_LOG=> createPayment -> payment', payment);
 
   try {
     await FirebaseApp.createItemDoc(firestoreCollection, payment);
@@ -18,6 +16,6 @@ export const createPayment = async (cart) => {
     console.log('PAGO:', payment);
     return true;
   } catch (error) {
-    console.error('MARTIN_LOG=> createPayment -> error', error);
+    console.error('createPayment -> error', error);
   }
 };

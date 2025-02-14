@@ -62,10 +62,7 @@ export const CartContextProvider = ({ children }) => {
       product.total_price = Number(
         (product.price * product.quantity).toFixed(2)
       );
-      console.log('MARTIN_LOG=> ', product.price, product.quantity);
-      console.log('MARTIN_LOG=> total_price', product.total_price);
       total += product.total_price;
-      console.log('MARTIN_LOG=> total', total);
     });
     return total;
   };
