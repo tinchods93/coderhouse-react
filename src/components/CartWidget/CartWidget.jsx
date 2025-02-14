@@ -35,7 +35,7 @@ const CartWidget = () => {
                   </div>
                   <div className='cart__total'>
                     <h2>Subtotal:</h2>
-                    <h2>${cart.total.toFixed(2)}</h2>
+                    <h2>${cart.total}</h2>
                   </div>
                 </div>
                 <div className='cart__actions'>

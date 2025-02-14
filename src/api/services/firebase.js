@@ -5,6 +5,7 @@ import {
   getDocs,
   getDoc,
   doc,
+  setDoc,
 } from 'firebase/firestore/lite';
 
 const firebaseConfig = {
@@ -25,16 +26,47 @@ class FirebaseApp {
     }
     return getFirestore(instance);
   }
+
   static async getItemsDocs(collectionName) {
+    const cachedData = localStorage.getItem(collectionName);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
     const db = FirebaseApp.getDbInstance();
-    const productsCollection = collection(db, collectionName);
-    return getDocs(productsCollection);
+    const itemCollection = collection(db, collectionName);
+    const snapshot = await getDocs(itemCollection);
+    const data = snapshot.docs.map((doc) => doc.data());
+    localStorage.setItem(collectionName, JSON.stringify(data));
+    return data;
   }
 
   static async getItemDoc(collectionName, docId) {
+    const cachedData = localStorage.getItem(collectionName);
+    if (cachedData) {
+      const items = JSON.parse(cachedData);
+      return items.find((item) => item.id === docId);
+    }
     const db = FirebaseApp.getDbInstance();
     const docRef = doc(db, collectionName, docId);
-    return getDoc(docRef);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  }
+
+  // crear un nuevo documento en la coleccion
+  static async createItemDoc(collectionName, data) {
+    const db = FirebaseApp.getDbInstance();
+    const itemCollection = collection(db, collectionName);
+    const docRef = doc(itemCollection);
+    await setDoc(docRef, data);
+    localStorage.removeItem(collectionName); // Invalidamos la cache
+  }
+
+  // actualizar un documento en la coleccion
+  static async updateItemDoc(collectionName, docId, data) {
+    const db = FirebaseApp.getDbInstance();
+    const docRef = doc(db, collectionName, docId);
+    await setDoc(docRef, data, { merge: true });
+    localStorage.removeItem(collectionName); // Invalidamos la cache
   }
 }
 

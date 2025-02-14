@@ -35,3 +35,23 @@ export const getProductById = async (id) => {
 
   return response;
 };
+
+export const updateProductsStockByCart = async (cart) => {
+  const promises = cart.products.map((product) => {
+    const productQuantity = product.stock - product.quantity;
+    return FirebaseApp.updateItemDoc(firestoreCollection, product.id, {
+      stock: productQuantity,
+    });
+  });
+
+  const response = await Promise.all(promises)
+    .then(() => {
+      console.log('**STOCK ACTUALIZADO**');
+      return true;
+    })
+    .catch((error) => {
+      console.error('Error actualizando el stock', error);
+    });
+
+  return response;
+};

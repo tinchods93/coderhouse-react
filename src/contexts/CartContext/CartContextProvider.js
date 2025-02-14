@@ -30,27 +30,42 @@ export const CartContextProvider = ({ children }) => {
   }, []);
 
   // Si existe el item en el carrito aumenta la cantidad, si no lo agregamos
-  const addToCart = (product) => {
+  const addToCart = (product, quantity = 1) => {
+    quantity = Number(quantity);
+    if (product.stock < quantity) return;
+
     const productIndex = cart.products.findIndex(
       (item) => item.id === product.id
     );
     const newCart = { ...cart };
     if (productIndex !== -1) {
-      newCart.products[productIndex].quantity += 1;
+      // si el producto ya existe, debemos checkear si la cantidad que se quiere agregar resultara en un stock mayor al disponible
+
+      if (newCart.products[productIndex].quantity + quantity <= product.stock) {
+        newCart.products[productIndex].quantity += quantity;
+      } else {
+        return;
+      }
     } else {
-      newCart.products = [...cart.products, { ...product, quantity: 1 }];
+      newCart.products = [...cart.products, { ...product, quantity: quantity }];
     }
-    newCart.total = calculateTotalAmount();
+    newCart.total = calculateTotalAmount(newCart);
     saveCart(newCart);
   };
 
-  const calculateTotalAmount = () => {
+  const calculateTotalAmount = (newCart) => {
     let total = 0;
 
-    if (cart.products.length === 0) return total;
+    if (newCart?.products.length === 0) return total;
 
-    cart.products?.forEach((product) => {
-      total += product.price * product.quantity;
+    newCart.products?.forEach((product) => {
+      product.total_price = Number(
+        (product.price * product.quantity).toFixed(2)
+      );
+      console.log('MARTIN_LOG=> ', product.price, product.quantity);
+      console.log('MARTIN_LOG=> total_price', product.total_price);
+      total += product.total_price;
+      console.log('MARTIN_LOG=> total', total);
     });
     return total;
   };
@@ -68,7 +83,7 @@ export const CartContextProvider = ({ children }) => {
         newCart.products.splice(productIndex, 1);
       }
     }
-    newCart.total = calculateTotalAmount();
+    newCart.total = calculateTotalAmount(newCart);
     saveCart(newCart);
   };
 
@@ -78,13 +93,17 @@ export const CartContextProvider = ({ children }) => {
     newCart.products = newCart.products.filter(
       (item) => item.id !== product.id
     );
-    newCart.total = calculateTotalAmount();
+    newCart.total = calculateTotalAmount(newCart);
     saveCart(newCart);
+  };
+
+  const clearCart = () => {
+    saveCart(JSON.parse(JSON.stringify(initialCart)));
   };
 
   return (
     <CartContext.Provider
-      value={[cart, addToCart, removeFromCart, deleteFromCart]}>
+      value={[cart, addToCart, removeFromCart, deleteFromCart, clearCart]}>
       {children}
     </CartContext.Provider>
   );

@@ -1,10 +1,6 @@
-import { useContext } from 'react';
 import Card from '../Card/Card';
-import { CartContext } from '../../contexts/CartContext/CartContextProvider';
 
 const Item = ({ item: product }) => {
-  const [, addToCart] = useContext(CartContext);
-
   const HeaderContent = (
     <>
       <img src={product.images?.[0]} alt={product.name} />
@@ -18,10 +14,12 @@ const Item = ({ item: product }) => {
         <p>{product.description}</p>
         <p>${product.price}</p>
         <p>{product.category}</p>
+        {product.stock > 0 ? (
+          <p>Stock: {product.stock}</p>
+        ) : (
+          <p style={{ color: 'red', fontWeight: 600 }}>Sin stock</p>
+        )}
       </a>
-      <button className='custom-button' onClick={() => addToCart(product)}>
-        Agregar al carrito
-      </button>
     </Card>
   );
 };

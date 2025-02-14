@@ -1,15 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './productPage.scss';
 import MainContainer from '../../layouts/MainContainer/MainContainer';
 import { useParams } from 'react-router';
 import { getProductById } from '../../api/services/products/productsService';
 import LoadingComponent from '../../components/Loading/LoadingComponent';
+import { CartContext } from '../../contexts/CartContext/CartContextProvider';
 
 const ProductPage = (props) => {
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const params = useParams();
+  const [, addToCart] = useContext(CartContext);
 
   useEffect(() => {
     if (params.id && !product) {
@@ -40,10 +43,28 @@ const ProductPage = (props) => {
                 <div className='product-page__info'>
                   <p>{product.description}</p>
                 </div>
-                <div className='product-page__actions'>
-                  <button>Agregar al carrito</button>
-                  <p>${product.price}</p>
-                </div>
+                {product.stock > 0 ? (
+                  <>
+                    <p>Stock: {product.stock}</p>
+                    <div className='product-page__actions'>
+                      <input
+                        type='number'
+                        value={quantity}
+                        min={1}
+                        max={product.stock}
+                        onChange={(e) => setQuantity(e.target.value)}
+                      />
+                      <button
+                        className='custom-button'
+                        onClick={() => addToCart(product, quantity)}>
+                        Agregar al carrito
+                      </button>
+                      <p>${product.price}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p style={{ color: 'red', fontWeight: 600 }}>Sin stock</p>
+                )}
               </div>
             </section>
           </div>
