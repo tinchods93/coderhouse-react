@@ -1,14 +1,12 @@
 import CartWidget from '../CartWidget/CartWidget';
+import companyImage from '../../assets/images/logo192.png';
 import './navbar.scss';
 
 const Navbar = () => {
   return (
     <nav className='navbar'>
       <div className='logo-container'>
-        <img
-          src='https://static-00.iconduck.com/assets.00/placeholder-icon-2048x2048-48kucnce.png'
-          alt='logo'
-        />
+        <img src={companyImage} alt='logo' />
       </div>
       <ul className='nav-links'>
         <li>

@@ -1,0 +1,85 @@
+.checkout-ticket-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #fff;
+  border: 1px solid #000000da;
+  padding: 20px;
+  width: fit-content;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Courier New', Courier, monospace;
+
+  .checkout-ticket-modal-close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #333;
+  }
+
+  .checkout-ticket-header {
+    text-align: center;
+    margin-bottom: 20px;
+
+    .company-logo {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+
+    p {
+      margin: 5px 0;
+      font-size: 0.9em;
+      color: #333;
+    }
+  }
+
+  .checkout-ticket-body {
+    .ticket-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        font-size: 0.9em;
+      }
+
+      th {
+        background-color: #f9f9f9;
+      }
+    }
+
+    .ticket-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1em;
+      border-top: 1px dashed #000;
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+  }
+}
+
+.checkout-ticket-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
