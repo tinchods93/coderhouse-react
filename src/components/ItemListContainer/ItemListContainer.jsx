@@ -24,9 +24,14 @@ const ItemListContainer = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    return search?.category
-      ? allProducts?.filter((product) => product.category === search.category)
-      : allProducts;
+    if (search?.category) {
+      setPageIndex(1); // si cambia la categoria, volvemos a la pagina 1
+      return allProducts?.filter(
+        (product) => product.category === search.category
+      );
+    }
+
+    return allProducts;
   }, [allProducts, search]);
 
   const pages = useMemo(() => {

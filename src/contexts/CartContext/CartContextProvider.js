@@ -82,14 +82,9 @@ export const CartContextProvider = ({ children }) => {
     saveCart(newCart);
   };
 
-  // Limpia el carrito
-  const clearCart = () => {
-    saveCart(JSON.parse(JSON.stringify(initialCart)));
-  };
-
   return (
     <CartContext.Provider
-      value={[cart, addToCart, removeFromCart, deleteFromCart, clearCart]}>
+      value={[cart, addToCart, removeFromCart, deleteFromCart]}>
       {children}
     </CartContext.Provider>
   );

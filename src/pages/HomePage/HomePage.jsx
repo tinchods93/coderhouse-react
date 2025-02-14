@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './homePage.scss';
-import MainContainer from '../../layouts/MainContainer/MainContainer';
 import ItemListContainer from '../../components/ItemListContainer/ItemListContainer';
+import MainContainer from '../../layouts/MainContainer/MainContainer';
 
 const HomePage = () => {
   return (

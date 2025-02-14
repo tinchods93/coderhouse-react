@@ -2,9 +2,10 @@ import { useContext, useState } from 'react';
 import './cartWidget.scss';
 import { CartContext } from '../../contexts/CartContext/CartContextProvider';
 import CartItem from '../CartItem/CartItem';
+import { Link } from 'react-router';
 
 const CartWidget = () => {
-  const [cart, , , , clearCart] = useContext(CartContext);
+  const [cart] = useContext(CartContext);
   const [showCart, setShowCart] = useState(false);
 
   const handleShowCart = (value) => {
@@ -38,8 +39,9 @@ const CartWidget = () => {
                   </div>
                 </div>
                 <div className='cart__actions'>
-                  <button>Finalizar Compra</button>
-                  <button onClick={() => clearCart()}>Limpiar Carrito</button>
+                  <Link className='custom-button' to={'./checkout'}>
+                    Pagar
+                  </Link>
                 </div>
               </>
             ) : (

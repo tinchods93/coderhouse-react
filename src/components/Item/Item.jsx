@@ -19,7 +19,9 @@ const Item = ({ item: product }) => {
         <p>${product.price}</p>
         <p>{product.category}</p>
       </a>
-      <button onClick={() => addToCart(product)}>Agregar al carrito</button>
+      <button className='custom-button' onClick={() => addToCart(product)}>
+        Agregar al carrito
+      </button>
     </Card>
   );
 };

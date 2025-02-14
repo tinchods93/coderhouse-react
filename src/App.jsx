@@ -6,6 +6,7 @@ import './styles/global.scss';
 import ProductPage from './pages/ProductPage/ProductPage';
 import AboutPage from './pages/AboutPage/AboutPage';
 import { CartContextProvider } from './contexts/CartContext/CartContextProvider';
+import CheckoutPage from './pages/CheckoutPage/CheckoutPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             }
           />
           <Route path='/' element={<HomePage />} />
+          <Route path='/checkout' element={<CheckoutPage />} />
           <Route path='/products/:id' element={<ProductPage />} />
           <Route path='/about' element={<AboutPage />} />
         </Routes>
