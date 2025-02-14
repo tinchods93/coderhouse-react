@@ -2,54 +2,78 @@
 import { useEffect, useState } from 'react';
 import { Pagination } from 'antd';
 import CardGrid from '../../components/CardGrid/CardGrid';
-import { getAllProducts } from '../../api/services/productsService';
+import { getAllProducts } from '../../api/services/products/productsService';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import LoadingComponent from '../Loading/LoadingComponent';
+import paginateProducts from '../../api/services/products/utils/paginateProducts';
 
 const ProductsGrid = () => {
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [allProducts, setAllProducts] = useState([]); // todas las paginas
+  const [productsPages, setProductsPages] = useState([]); // todas las paginas
+  const [selectedProductsPage, setSelectedProductsPage] = useState([]); // la pagina seleccionada
   const [pageIndex, setPageIndex] = useState(1);
+  const [search, setSearch] = useState({ limit: 20 }); // parametros de busqueda
+  const [categories, setCategories] = useState([]); // listado de las categorias, para poder rellenar el dropdown
   const [totalProducts, setTotalProducts] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // este useEffect se ejecuta cuando se monta el componente y cuando cambia el valor de search o pageIndex
-    getAllProducts(search, pageIndex)
-      .then((data) => {
-        // agregamos la propiedad pageUrl a cada producto
-        const response = data?.products?.map((product) => {
-          product.pageUrl = `./products/${product.id}`;
-          return product;
-        });
-        setProducts(response);
-        setTotalProducts(data?.total);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [search, pageIndex]);
+    getAllProducts().then((data) => {
+      setAllProducts(data?.products);
+    });
+  }, []);
+
+  useEffect(() => {
+    let tempProducts = [];
+    if (
+      allProducts?.length &&
+      (!productsPages?.length || Object.keys(search).length)
+    ) {
+      setIsLoading(true);
+      const filteredProducts = search?.category
+        ? allProducts?.filter((product) => product.category === search.category)
+        : allProducts;
+      const { pages } = paginateProducts(filteredProducts, search?.limit);
+
+      tempProducts = pages;
+      setProductsPages(pages);
+      setTotalProducts(filteredProducts.length);
+    }
+
+    if (productsPages?.length && pageIndex) {
+      updateProductList(tempProducts[pageIndex - 1]);
+      setIsLoading(false); // sacamos el estado de loading, una vez que hayamos cargado la pagina de productos
+    }
+  }, [allProducts, search, pageIndex]); // esto se debe ejecutar cuando cambia allProducts, search o pageIndex
 
   useEffect(() => {
     // este useEffect se ejecuta cuando se monta el componente y cuando cambia el valor de products
-    if (products?.length && !categories?.length) {
+    if (selectedProductsPage?.length && !categories?.length) {
       const tempCategories = [...categories];
-      products?.forEach((product) => {
+      selectedProductsPage?.forEach((product) => {
         if (!tempCategories.includes(product.category)) {
           tempCategories.push(product.category);
         }
       });
       setCategories(tempCategories);
     }
-  }, [products]);
+  }, [selectedProductsPage]);
+
+  const updateProductList = (newProducts) => {
+    const response = newProducts?.map((product) => {
+      product.pageUrl = `./products/${product.id}`;
+      return product;
+    });
+    setSelectedProductsPage(response);
+  };
 
   return (
     <div className='products-grid'>
       {isLoading && <LoadingComponent />}
       {!isLoading && (
         <>
-          {products?.length && (
+          {selectedProductsPage?.length && (
             <>
               <div className='search-bar'>
                 <span>Categoria: </span>
@@ -63,8 +87,11 @@ const ProductsGrid = () => {
                   ))}
                 </select>
               </div>
-              {products && (
-                <CardGrid itemList={products} CardComponent={ProductCard} />
+              {selectedProductsPage && (
+                <CardGrid
+                  itemList={selectedProductsPage}
+                  CardComponent={ProductCard}
+                />
               )}
               <Pagination
                 onChange={(page, pageSize) => {
@@ -76,11 +103,11 @@ const ProductsGrid = () => {
                   }
                 }}
                 total={totalProducts}
-                pageSize={products.length}
+                pageSize={search?.limit || 30}
               />
             </>
           )}
-          {!products?.length && (
+          {!selectedProductsPage?.length && (
             <h2>
               No hay productos disponibles o no se pudieron cargar. Revisar
               consola.

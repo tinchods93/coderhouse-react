@@ -1,7 +1,12 @@
 import apiConfig from '../config/apiConfig';
 
 export const getCartById = async (cartId) => {
-  const response = await fetch(`${apiConfig.url}/carts/${cartId}`);
+  const response = await fetch(`${apiConfig.url}/carts/${cartId}`).catch(
+    (error) => {
+      console.error('Error fetching cart by id', error);
+      return undefined;
+    }
+  );
   const data = await response.json();
   return data;
 };
