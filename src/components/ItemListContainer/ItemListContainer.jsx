@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, memo } from 'react';
 import { Pagination } from 'antd';
 import ItemList from '../ItemList/ItemList';
 import { getAllProducts } from '../../api/services/products/productsService';
@@ -9,7 +9,6 @@ import paginateProducts from '../../api/services/products/utils/paginateProducts
 
 const ItemListContainer = () => {
   const [allProducts, setAllProducts] = useState([]); // todas las paginas
-  const [productsPages, setProductsPages] = useState([]); // todas las paginas
   const [selectedProductsPage, setSelectedProductsPage] = useState([]); // la pagina seleccionada
   const [pageIndex, setPageIndex] = useState(1);
   const [search, setSearch] = useState({ limit: 20 }); // parametros de busqueda
@@ -24,28 +23,27 @@ const ItemListContainer = () => {
     });
   }, []);
 
-  useEffect(() => {
-    let tempProducts = [];
-    if (
-      allProducts?.length &&
-      (!productsPages?.length || Object.keys(search).length)
-    ) {
-      setIsLoading(true);
-      const filteredProducts = search?.category
-        ? allProducts?.filter((product) => product.category === search.category)
-        : allProducts;
+  const filteredProducts = useMemo(() => {
+    return search?.category
+      ? allProducts?.filter((product) => product.category === search.category)
+      : allProducts;
+  }, [allProducts, search]);
+
+  const pages = useMemo(() => {
+    if (filteredProducts.length) {
       const { pages } = paginateProducts(filteredProducts, search?.limit);
-
-      tempProducts = pages;
-      setProductsPages(pages);
       setTotalProducts(filteredProducts.length);
+      return pages;
     }
+    return [];
+  }, [filteredProducts, search]);
 
-    if (productsPages?.length && pageIndex) {
-      updateProductList(tempProducts[pageIndex - 1]);
+  useEffect(() => {
+    if (pages.length && pageIndex) {
+      updateProductList(pages[pageIndex - 1]);
       setIsLoading(false); // sacamos el estado de loading, una vez que hayamos cargado la pagina de productos
     }
-  }, [allProducts, search, pageIndex]); // esto se debe ejecutar cuando cambia allProducts, search o pageIndex
+  }, [pages, pageIndex]);
 
   useEffect(() => {
     // este useEffect se ejecuta cuando se monta el componente y cuando cambia el valor de products
@@ -119,4 +117,4 @@ const ItemListContainer = () => {
   );
 };
 
-export default ItemListContainer;
+export default memo(ItemListContainer);
