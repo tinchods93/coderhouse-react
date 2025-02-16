@@ -17,36 +17,31 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-let instance = null;
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
 
 class FirebaseApp {
-  static getDbInstance() {
-    if (!instance) {
-      instance = initializeApp(firebaseConfig);
+  static getCollection = async (collectionName) => {
+    // hice que se guarde en el localStorage para evitar consumir la quota gratis de firebase
+    const cachedCollection = localStorage.getItem(collectionName);
+    if (cachedCollection) {
+      return JSON.parse(cachedCollection);
     }
-    return getFirestore(instance);
-  }
 
-  static async getItemsDocs(collectionName) {
-    const cachedData = localStorage.getItem(collectionName);
-    if (cachedData) {
-      return JSON.parse(cachedData);
-    }
-    const db = FirebaseApp.getDbInstance();
-    const itemCollection = collection(db, collectionName);
-    const snapshot = await getDocs(itemCollection);
+    const collectionRef = collection(db, collectionName);
+    const snapshot = await getDocs(collectionRef);
     const data = snapshot.docs.map((doc) => doc.data());
+
     localStorage.setItem(collectionName, JSON.stringify(data));
     return data;
+  };
+
+  static async getItemsDocs(collectionName) {
+    const itemCollection = FirebaseApp.getCollection(collectionName);
+    return itemCollection;
   }
 
   static async getItemDoc(collectionName, docId) {
-    const cachedData = localStorage.getItem(collectionName);
-    if (cachedData) {
-      const items = JSON.parse(cachedData);
-      return items.find((item) => item.id === docId);
-    }
-    const db = FirebaseApp.getDbInstance();
     const docRef = doc(db, collectionName, docId);
     const docSnap = await getDoc(docRef);
     return docSnap.data();
@@ -54,8 +49,7 @@ class FirebaseApp {
 
   // crear un nuevo documento en la coleccion
   static async createItemDoc(collectionName, data) {
-    const db = FirebaseApp.getDbInstance();
-    const itemCollection = collection(db, collectionName);
+    const itemCollection = FirebaseApp.getCollection(collectionName);
     const docRef = doc(itemCollection);
     await setDoc(docRef, data);
     localStorage.removeItem(collectionName); // Invalidamos la cache
@@ -63,7 +57,6 @@ class FirebaseApp {
 
   // actualizar un documento en la coleccion
   static async updateItemDoc(collectionName, docId, data) {
-    const db = FirebaseApp.getDbInstance();
     const docRef = doc(db, collectionName, docId);
     await setDoc(docRef, data, { merge: true });
     localStorage.removeItem(collectionName); // Invalidamos la cache

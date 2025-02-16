@@ -19,7 +19,7 @@ const ItemListContainer = () => {
   useEffect(() => {
     // este useEffect se ejecuta cuando se monta el componente y cuando cambia el valor de search o pageIndex
     getAllProducts().then((data) => {
-      setAllProducts(data?.products);
+      setAllProducts(data);
     });
   }, []);
 
@@ -35,7 +35,7 @@ const ItemListContainer = () => {
   }, [allProducts, search]);
 
   const pages = useMemo(() => {
-    if (filteredProducts.length) {
+    if (filteredProducts?.length) {
       const { pages } = paginateProducts(filteredProducts, search?.limit);
       setTotalProducts(filteredProducts.length);
       return pages;
