@@ -2,18 +2,39 @@
 @use '../../styles/variables.scss' as *;
 
 .card {
-  width: 100%;
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-decoration: none !important;
   color: $color-2 !important;
-  padding: 10px;
+  overflow: hidden;
+  // padding: 15px;
   background-color: $background-color;
-  border-radius: 5px;
+  border-radius: 15px;
+
+  h2 {
+    // el titulo deberia ocupar 1 linea y si sobra, poner puntos suspensivos
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.4rem;
+  }
 
   a {
     text-align: justify;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    // quiero que sea un cursor flecha no el dedo
+    cursor: default;
+    // quiero una sombra hacia arriba y borde redondeado arriba
+    box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 15px 15px 0 0;
+    // background-color: blueviolet;
   }
 
   &-header {
@@ -29,9 +50,51 @@
     }
   }
 
-  @include box-shadow(0px, 4px, 10px, rgba(0, 0, 0, 0.2));
+  .card-item-button {
+    background-color: $color-3;
+    color: $color-6;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    // padding: 10px 5px;
+    border-radius: 10px;
 
-  @include respond-to(sm) {
-    width: 300px;
+    &:hover {
+      background-color: $color-4;
+    }
   }
+
+  .card-item-info {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    height: 100%;
+
+    .card-item-product-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+  }
+
+  .card-item-title {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .card-item-category {
+      font-size: 1rem;
+      font-weight: 400;
+      color: $color-2;
+      text-transform: uppercase;
+      border: 1px solid $color-3;
+      width: fit-content;
+      padding: 4px;
+      border-radius: 5px;
+    }
+  }
+
+  @include box-shadow(0px, 4px, 10px, rgba(0, 0, 0, 0.2));
 }
