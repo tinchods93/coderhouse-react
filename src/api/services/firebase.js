@@ -20,7 +20,7 @@ const firebaseConfig = {
 let instance = null;
 
 class FirebaseApp {
-  static cacheDuration = 3600000; // 1 hora en milisegundos
+  static cacheDuration = 3600000 * 24; // 1 hora en milisegundos
 
   static getDbInstance() {
     if (!instance) {

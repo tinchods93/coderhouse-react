@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { IoCartOutline } from 'react-icons/io5';
 import './cartWidget.scss';
 import { CartContext } from '../../contexts/CartContext/CartContextProvider';
 import CartItem from '../CartItem/CartItem';
@@ -53,7 +54,9 @@ const CartWidget = () => {
         )}
       </>
       <>
-        <button onClick={() => handleShowCart(true)}>carrito</button>
+        <button onClick={() => handleShowCart(true)} className='cart-widget-button'>
+          <IoCartOutline />
+        </button>
       </>
     </>
   );
