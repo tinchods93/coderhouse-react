@@ -18,9 +18,7 @@ const ItemListContainer = () => {
 
   useEffect(() => {
     // este useEffect se ejecuta cuando se monta el componente y cuando cambia el valor de search o pageIndex
-    getAllProducts().then((data) => {
-      setAllProducts(data?.products);
-    });
+    getAllProducts().then((data) => setAllProducts(data));
   }, []);
 
   const filteredProducts = useMemo(() => {

@@ -20,6 +20,8 @@ const firebaseConfig = {
 let instance = null;
 
 class FirebaseApp {
+  static cacheDuration = 3600000; // 1 hora en milisegundos
+
   static getDbInstance() {
     if (!instance) {
       instance = initializeApp(firebaseConfig);
@@ -29,26 +31,44 @@ class FirebaseApp {
 
   static async getItemsDocs(collectionName) {
     const cachedData = localStorage.getItem(collectionName);
+    const now = Date.now();
+
     if (cachedData) {
-      return JSON.parse(cachedData);
+      const parsedCache = JSON.parse(cachedData);
+      if (now - parsedCache.timestamp < FirebaseApp.cacheDuration) {
+        return parsedCache.data;
+      }
     }
+
     const db = FirebaseApp.getDbInstance();
     const itemCollection = collection(db, collectionName);
     const snapshot = await getDocs(itemCollection);
     const data = snapshot.docs.map((doc) => doc.data());
-    localStorage.setItem(collectionName, JSON.stringify(data));
+
+    const cacheObject = {
+      data,
+      timestamp: now,
+    };
+
+    localStorage.setItem(collectionName, JSON.stringify(cacheObject));
+    console.log(
+      'MARTIN_LOG=> FirebaseApp -> getItemsDocs -> cacheObject',
+      cacheObject
+    );
     return data;
   }
 
   static async getItemDoc(collectionName, docId) {
     const cachedData = localStorage.getItem(collectionName);
     if (cachedData) {
-      const items = JSON.parse(cachedData);
-      return items.find((item) => item.id === docId);
+      const parsedCache = JSON.parse(cachedData);
+      const items = parsedCache.data;
+      return items.find((item) => `${item.id}` === docId);
     }
     const db = FirebaseApp.getDbInstance();
     const docRef = doc(db, collectionName, docId);
     const docSnap = await getDoc(docRef);
+    console.log('MARTIN_LOG=> FirebaseApp -> getItemDoc -> docSnap', docSnap);
     return docSnap.data();
   }
 
