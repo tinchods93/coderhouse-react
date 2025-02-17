@@ -11,14 +11,8 @@ const Item = ({ item: product }) => {
   return (
     <Card header={HeaderContent}>
       <a href={product.pageUrl}>
-        <p>{product.description}</p>
         <p>${product.price}</p>
         <p>{product.category}</p>
-        {product.stock > 0 ? (
-          <p>Stock: {product.stock}</p>
-        ) : (
-          <p style={{ color: 'red', fontWeight: 600 }}>Sin stock</p>
-        )}
       </a>
     </Card>
   );
